@@ -1,34 +1,34 @@
 import { assert, assertFalse } from "jsr:@std/assert";
-import { hasExt } from "./has_ext.ts";
+import { hasFileExt } from "./has_file_ext.ts";
 
-Deno.test("hasExt - argument path", async (t) => {
+Deno.test("hasFileExt - argument path", async (t) => {
   // valid
   await t.step("if it has file extension", () => {
-    assert(hasExt("file.txt"));
+    assert(hasFileExt("file.txt"));
   });
 
   await t.step("if it nested file path", () => {
-    assert(hasExt("dir/file.txt"));
+    assert(hasFileExt("dir/file.txt"));
   });
 
   // invalid
   await t.step("if it is empty", () => {
-    assertFalse(hasExt(""));
+    assertFalse(hasFileExt(""));
   });
 
   await t.step("if it is only dot(.)", () => {
-    assertFalse(hasExt("."));
+    assertFalse(hasFileExt("."));
   });
 
   await t.step("if it has no file extention", () => {
-    assertFalse(hasExt("file"));
+    assertFalse(hasFileExt("file"));
   });
 
   await t.step("if it is directory", () => {
-    assertFalse(hasExt("dir/"));
+    assertFalse(hasFileExt("dir/"));
   });
 
   await t.step("if it is dot file", () => {
-    assertFalse(hasExt(".sample"));
+    assertFalse(hasFileExt(".sample"));
   });
 });
