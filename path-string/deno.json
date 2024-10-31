@@ -1,0 +1,5 @@
+{
+  "name": "@mitsuru793/path-string",
+  "version": "0.0.1",
+  "exports": "./mod.ts"
+}
