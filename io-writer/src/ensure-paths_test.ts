@@ -1,24 +1,7 @@
 import { assert, fail } from "jsr:@std/assert";
 import { join } from "jsr:@std/path";
 import { ensurePaths } from "./ensure_paths.ts";
-
-function testMakePath(
-  name: string,
-  cb: (tmpDir: string) => void,
-  ignore = false,
-): void {
-  Deno.test({
-    name,
-    fn() {
-      const tempDir = Deno.makeTempDirSync({
-        prefix: "deno_io-writer_make_path_test_",
-      });
-      cb(tempDir);
-      Deno.removeSync(tempDir, { recursive: true });
-    },
-    ignore,
-  });
-}
+import { testMakePath } from "./_test_util.ts";
 
 testMakePath("ensurePaths - if argument is not empty", (tmpDir) => {
   let joined = [join(tmpDir, "f1")];

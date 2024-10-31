@@ -1,24 +1,7 @@
 import { assert } from "jsr:@std/assert";
 import { join } from "jsr:@std/path";
 import { ensurePath } from "./ensure-path.ts";
-
-function testMakePath(
-  name: string,
-  cb: (tmpDir: string) => void,
-  ignore = false,
-): void {
-  Deno.test({
-    name,
-    fn() {
-      const tempDir = Deno.makeTempDirSync({
-        prefix: "deno_io-writer_make_path_test_",
-      });
-      cb(tempDir);
-      Deno.removeSync(tempDir, { recursive: true });
-    },
-    ignore,
-  });
-}
+import { testMakePath } from "./_test_util.ts";
 
 testMakePath("ensurePath - if argument path is file", (tmpDir) => {
   const tests = [
