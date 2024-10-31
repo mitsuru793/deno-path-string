@@ -1,7 +1,7 @@
 import { assert, fail } from "jsr:@std/assert";
 import { join } from "jsr:@std/path";
-import { testMakePath } from "./_test_util.ts";
 import { ensurePaths } from "./ensure_paths.ts";
+import { testMakePath } from "../_test_util.ts";
 
 testMakePath("ensurePaths - if argument is not empty", (tmpDir) => {
   let joined = [join(tmpDir, "f1")];

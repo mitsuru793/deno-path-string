@@ -1,7 +1,7 @@
 import { assert } from "jsr:@std/assert";
 import { join } from "jsr:@std/path";
 import { ensurePath } from "./ensure_path.ts";
-import { testMakePath } from "./_test_util.ts";
+import { testMakePath } from "../_test_util.ts";
 
 testMakePath("ensurePath - if argument path is file", (tmpDir) => {
   const tests = [
