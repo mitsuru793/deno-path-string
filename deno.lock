@@ -32,13 +32,6 @@
     "dependencies": [
       "jsr:@std/assert@1",
       "jsr:@std/path@^1.0.7"
-    ],
-    "members": {
-      "io-writer": {
-        "dependencies": [
-          "jsr:@std/fs@^1.0.5"
-        ]
-      }
-    }
+    ]
   }
 }
