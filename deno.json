@@ -2,7 +2,10 @@
   "tasks": {
     "dev": "deno run --watch main.ts"
   },
-  "workspace": ["./path-string"],
+  "workspace": [
+    "./path-string",
+    "./io-writer"
+  ],
   "imports": {
     "@std/assert": "jsr:@std/assert@1",
     "@std/path": "jsr:@std/path@^1.0.7"
