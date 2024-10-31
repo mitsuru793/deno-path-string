@@ -2,6 +2,8 @@
 
 Provide utility functions for path of string.
 
+So don't care whether path exists. The path is in only string, but not in IO.
+
 If string ends with slash, it's directory.
 
 - a/
