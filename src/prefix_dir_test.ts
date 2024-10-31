@@ -1,66 +1,66 @@
 import { assertEquals, assertThrows } from "jsr:@std/assert";
-import { appendPrefixDir } from "./append_prefix.ts";
+import { prefixDir } from "./prefix_dir.ts";
 
-Deno.test("appendPrefixDir - argument paths", async (t) => {
+Deno.test("prefixDir - argument paths", async (t) => {
   // valid
   await t.step("if it is empty", () => {
-    const got = appendPrefixDir("dir/", []);
+    const got = prefixDir("dir/", []);
     assertEquals(got, []);
   });
 
   await t.step("if it has file", () => {
-    const got = appendPrefixDir("dir/", ["f1"]);
+    const got = prefixDir("dir/", ["f1"]);
     assertEquals(got, ["dir/f1"]);
   });
 
   await t.step("if it has dir", () => {
-    const got = appendPrefixDir("dir/", ["subDir/"]);
+    const got = prefixDir("dir/", ["subDir/"]);
     assertEquals(got, ["dir/subDir/"]);
   });
 
   await t.step("if it has nested path", () => {
-    const got = appendPrefixDir("dir/", ["subDir/f1"]);
+    const got = prefixDir("dir/", ["subDir/f1"]);
     assertEquals(got, ["dir/subDir/f1"]);
   });
 
   await t.step("if it has some elements", () => {
-    const got = appendPrefixDir("dir/", ["f1", "subDir/"]);
+    const got = prefixDir("dir/", ["f1", "subDir/"]);
     assertEquals(got, ["dir/f1", "dir/subDir/"]);
   });
 });
 
-Deno.test("appendPrefixDir - arugment prefix", async (t) => {
+Deno.test("prefixDir - arugment prefix", async (t) => {
   // valid
   await t.step("if it has suffix with slash", () => {
-    const got = appendPrefixDir("dir/", ["f1"]);
+    const got = prefixDir("dir/", ["f1"]);
     assertEquals(got, ["dir/f1"]);
   });
 
   await t.step("if it has prefix and suffix with slash", () => {
-    const got = appendPrefixDir("/dir/", ["f1"]);
+    const got = prefixDir("/dir/", ["f1"]);
     assertEquals(got, ["/dir/f1"]);
   });
 
   await t.step("if it has prefix and suffix with slash", () => {
-    const got = appendPrefixDir("/dir/", ["f1"]);
+    const got = prefixDir("/dir/", ["f1"]);
     assertEquals(got, ["/dir/f1"]);
   });
 
   await t.step("if it is only slash", () => {
-    const got = appendPrefixDir("/", ["f1"]);
+    const got = prefixDir("/", ["f1"]);
     assertEquals(got, ["/f1"]);
   });
 
   // throw error
   await t.step("if it has no suffix with slash", () => {
     assertThrows(() => {
-      appendPrefixDir("base", ["f1"]);
+      prefixDir("base", ["f1"]);
     });
   });
 
   await t.step("if it is empty", () => {
     assertThrows(() => {
-      appendPrefixDir("", ["f1"]);
+      prefixDir("", ["f1"]);
     });
   });
 });

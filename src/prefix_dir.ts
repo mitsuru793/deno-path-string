@@ -1,7 +1,7 @@
 import { join } from "jsr:@std/path";
 import { isDir } from "./is_dir.ts";
 
-export function appendPrefixDir(dir: string, paths: string[]): string[] {
+export function prefixDir(dir: string, paths: string[]): string[] {
   if (!isDir(dir)) {
     throw new Error(`Arugment dir is suffixed with slash: ${dir}`);
   }
