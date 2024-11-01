@@ -1,5 +1,4 @@
 import { assertEquals } from "jsr:@std/assert";
-import { join } from "jsr:@std/path";
 import { doesPathExist } from "./does_path_exist.ts";
 import { testMakePath } from "../_test_util.ts";
 import { ensurePaths } from "../ensure/mod.ts";
