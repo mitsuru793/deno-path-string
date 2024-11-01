@@ -9,6 +9,7 @@ Deno.test("doesDirExist", () => {
     [dir, true],
     [file, false],
     ["missing", false],
+    ["missing/", false],
   ];
   testcases.forEach(([target, expected]) => {
     const got = doesDirExist(target);
