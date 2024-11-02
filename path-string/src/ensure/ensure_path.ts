@@ -1,5 +1,6 @@
 import { ensureDirSync, ensureFileSync } from "jsr:@std/fs";
-import { isDir, isFile } from "@mitsuru793/path-string";
+import { isDir } from "../is_dir.ts";
+import { isFile } from "../is_file.ts";
 
 export function ensurePath(path: string): void {
   if (path === ".") {
