@@ -37,35 +37,7 @@ tableTest("prefixDir() - argument paths", [
   },
 ]);
 
-tableTest("prefixDir() - argument paths", [
-  {
-    label: "if it is empty",
-    inputs: ["dir/", []],
-    expected: [],
-  },
-  {
-    label: "if it has file",
-    inputs: ["dir/", ["f1"]],
-    expected: ["dir/f1"],
-  },
-  {
-    label: "if it has dir",
-    inputs: ["dir/", ["subDir/"]],
-    expected: ["dir/subDir/"],
-  },
-  {
-    label: "if it has nested path",
-    inputs: ["dir/", ["subDir/f1"]],
-    expected: ["dir/subDir/f1"],
-  },
-  {
-    label: "if it has some elements",
-    inputs: ["dir/", ["f1", "subDir/"]],
-    expected: ["dir/f1", "dir/subDir/"],
-  },
-]);
-
-tableTest("prefixDir() - arugment prefix for valid", [
+tableTest("prefixDir() - argument prefix for valid", [
   {
     label: "if it has suffix with slash",
     inputs: ["dir/", ["f1"]],
@@ -88,7 +60,7 @@ tableTest("prefixDir() - arugment prefix for valid", [
   },
 ]);
 
-tableTestThrow("prefixDir() - arugment prefix for throwing error", [
+tableTestThrow("prefixDir() - argument prefix for throwing error", [
   {
     label: "if it has no suffix with slash",
     inputs: ["base", ["f1"]],

@@ -15,7 +15,7 @@ testMakePath("ensurePaths - if argument is not empty", (tmpDir) => {
   assert(Deno.lstatSync(joined[2]).isFile, joined[2]);
 });
 
-testMakePath("ensurePaths - if arugment is empty", (_tmpDir) => {
+testMakePath("ensurePaths - if argument is empty", (_tmpDir) => {
   try {
     ensurePaths([]);
   } catch (e) {

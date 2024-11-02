@@ -1,7 +1,7 @@
 import { assert, assertThrows } from "jsr:@std/assert";
 import { isDir } from "./is_dir.ts";
 
-Deno.test("mustDir - arugment path", async (t) => {
+Deno.test("mustDir - argument path", async (t) => {
   // successful
   await t.step("if it has suffix with slash", () => {
     assert(isDir("dir/"));
