@@ -31,18 +31,31 @@ type TestRunner<T extends TestFunction> = (
   inputs: TestCase<T>["inputs"],
 ) => ReturnType<T>;
 
-type TableDrivenOption = {
+type TableDrivenOption<T extends TestFunction> = {
   prefixedTestName?: string;
+  subTestName?: (testcase: TestCase<T> | ThrowTestCase<T>) => string;
 };
+
+function createCaseName<T extends TestFunction>(
+  testcase: TestCase<T> | ThrowTestCase<T>,
+  option: TableDrivenOption<T>,
+): string {
+  if (option.subTestName === undefined) {
+    return testcase.label;
+  }
+
+  return option.subTestName(testcase);
+}
 
 export function tableDrivenTest<T extends TestFunction>(
   testcases: TestCase<T>[],
   runner: TestRunner<T>,
-  option: TableDrivenOption = {},
+  option: TableDrivenOption<T> = {},
 ): void {
   if (option.prefixedTestName === undefined) {
     for (const testcase of testcases) {
-      Deno.test(testcase.label, () => {
+      const caseName = createCaseName(testcase, option);
+      Deno.test(caseName, () => {
         const got = runner(testcase.inputs);
         assertEquals(got, testcase.expected);
       });
@@ -52,7 +65,8 @@ export function tableDrivenTest<T extends TestFunction>(
 
   Deno.test(option.prefixedTestName, async (t) => {
     for (const testcase of testcases) {
-      await t.step(testcase.label, () => {
+      const caseName = createCaseName(testcase, option);
+      await t.step(caseName, () => {
         const got = runner(testcase.inputs);
         assertEquals(got, testcase.expected);
       });
@@ -68,11 +82,12 @@ export type ThrowTestCase<T extends TestFunction> = {
 export function tableDrivenTestThrow<T extends TestFunction>(
   testcases: ThrowTestCase<T>[],
   runner: TestRunner<T>,
-  option: TableDrivenOption = {},
+  option: TableDrivenOption<T> = {},
 ): void {
   if (option.prefixedTestName === undefined) {
     for (const testcase of testcases) {
-      Deno.test(testcase.label, () => {
+      const caseName = createCaseName(testcase, option);
+      Deno.test(caseName, () => {
         assertThrows(() => {
           runner(testcase.inputs);
         });
@@ -83,7 +98,8 @@ export function tableDrivenTestThrow<T extends TestFunction>(
 
   Deno.test(option.prefixedTestName, async (t) => {
     for (const testcase of testcases) {
-      await t.step(testcase.label, () => {
+      const caseName = createCaseName(testcase, option);
+      await t.step(caseName, () => {
         assertThrows(() => {
           runner(testcase.inputs);
         });
