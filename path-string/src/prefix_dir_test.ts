@@ -1,6 +1,11 @@
 import { assertEquals, assertThrows } from "jsr:@std/assert";
 import { prefixDir } from "./prefix_dir.ts";
 
+type TestCase = {
+  inputs: Parameters<typeof prefixDir>;
+  expected: ReturnType<typeof prefixDir>;
+};
+
 Deno.test("prefixDir - argument paths", async (t) => {
   // valid
   await t.step("if it is empty", () => {
@@ -63,4 +68,25 @@ Deno.test("prefixDir - arugment prefix", async (t) => {
       prefixDir("", ["f1"]);
     });
   });
+});
+
+Deno.test("prefixDir - combine continuous slash into one", () => {
+  const tests: TestCase[] = [
+    {
+      inputs: ["dir//", ["//f1"]],
+      expected: ["dir/f1"],
+    },
+    {
+      inputs: ["dir1//", ["//dir2//"]],
+      expected: ["dir1/dir2/"],
+    },
+    {
+      inputs: ["//dir1//", ["//dir2//"]],
+      expected: ["/dir1/dir2/"],
+    },
+  ];
+  for (const { inputs, expected } of tests) {
+    const got = prefixDir(...inputs);
+    assertEquals(got, expected);
+  }
 });
