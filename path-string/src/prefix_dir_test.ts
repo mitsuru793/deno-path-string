@@ -1,44 +1,15 @@
 import { prefixDir } from "./prefix_dir.ts";
-import {
-  tableDrivenTest,
-  tableDrivenTestThrow,
-  type TestCase,
-  type ThrowTestCase,
-} from "./_test_util.ts";
+import { bindTableDrivenTest, bindTableDrivenTestThrow } from "./_test_util.ts";
 
-const prefixedTestName = "prefixDir()";
+const tableTest = bindTableDrivenTest<typeof prefixDir>({
+  runner: (inputs) => prefixDir(...inputs),
+});
 
-function tableTest(
-  testname: string,
-  testcases: TestCase<typeof prefixDir>[],
-) {
-  tableDrivenTest(
-    testcases,
-    (inputs) => {
-      return prefixDir(...inputs);
-    },
-    {
-      prefixedTestName: `${prefixedTestName} - ${testname}`,
-    },
-  );
-}
+const tableTestThrow = bindTableDrivenTestThrow<typeof prefixDir>({
+  runner: (inputs) => prefixDir(...inputs),
+});
 
-function tableTestThrow(
-  testname: string,
-  testcases: ThrowTestCase<typeof prefixDir>[],
-) {
-  tableDrivenTestThrow(
-    testcases,
-    (inputs) => {
-      return prefixDir(...inputs);
-    },
-    {
-      prefixedTestName: `${prefixedTestName} - ${testname}`,
-    },
-  );
-}
-
-tableTest("argument paths", [
+tableTest("prefixDir() - argument paths", [
   {
     label: "if it is empty",
     inputs: ["dir/", []],
@@ -66,7 +37,7 @@ tableTest("argument paths", [
   },
 ]);
 
-tableTest("argument paths", [
+tableTest("prefixDir() - argument paths", [
   {
     label: "if it is empty",
     inputs: ["dir/", []],
@@ -94,7 +65,7 @@ tableTest("argument paths", [
   },
 ]);
 
-tableTest("arugment prefix for valid", [
+tableTest("prefixDir() - arugment prefix for valid", [
   {
     label: "if it has suffix with slash",
     inputs: ["dir/", ["f1"]],
@@ -117,7 +88,7 @@ tableTest("arugment prefix for valid", [
   },
 ]);
 
-tableTestThrow("arugment prefix for throwing error", [
+tableTestThrow("prefixDir() - arugment prefix for throwing error", [
   {
     label: "if it has no suffix with slash",
     inputs: ["base", ["f1"]],
@@ -128,7 +99,7 @@ tableTestThrow("arugment prefix for throwing error", [
   },
 ]);
 
-tableTest("combine continuous slash into one", [
+tableTest("prefixDir() - combine continuous slash into one", [
   {
     label: "if dir and file have double slash",
     inputs: ["dir//", ["//f1"]],

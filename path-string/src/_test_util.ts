@@ -107,3 +107,39 @@ export function tableDrivenTestThrow<T extends TestFunction>(
     }
   });
 }
+
+type BinedTarget<T extends TestFunction> = {
+  runner: TestRunner<T>;
+};
+
+export function bindTableDrivenTest<T extends TestFunction>(
+  binded: BinedTarget<T>,
+) {
+  return (
+    prefixedTestName: string,
+    testcases: TestCase<T>[],
+    option: TableDrivenOption<T> = {},
+  ) => {
+    tableDrivenTest<T>(
+      testcases,
+      binded.runner,
+      { ...option, prefixedTestName },
+    );
+  };
+}
+
+export function bindTableDrivenTestThrow<T extends TestFunction>(
+  binded: BinedTarget<T>,
+) {
+  return (
+    prefixedTestName: string,
+    testcases: ThrowTestCase<T>[],
+    option: TableDrivenOption<T> = {},
+  ) => {
+    tableDrivenTestThrow<T>(
+      testcases,
+      binded.runner,
+      { ...option, prefixedTestName },
+    );
+  };
+}
