@@ -8,3 +8,4 @@ export * from "./src/parent.ts";
 export * from "./src/prefix_dir.ts";
 
 export * from "./src/ensure/mod.ts";
+export * from "./src/exist/mod.ts";
