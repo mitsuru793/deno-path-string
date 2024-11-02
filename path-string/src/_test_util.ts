@@ -31,12 +31,26 @@ type TestRunner<T extends TestFunction> = (
   inputs: TestCase<T>["inputs"],
 ) => ReturnType<T>;
 
+type TableDrivenOption = {
+  prefixedTestName?: string;
+};
+
 export function tableDrivenTest<T extends TestFunction>(
-  testname: string,
   testcases: TestCase<T>[],
   runner: TestRunner<T>,
+  option: TableDrivenOption = {},
 ): void {
-  Deno.test(testname, async (t) => {
+  if (option.prefixedTestName === undefined) {
+    for (const testcase of testcases) {
+      Deno.test(testcase.label, () => {
+        const got = runner(testcase.inputs);
+        assertEquals(got, testcase.expected);
+      });
+    }
+    return;
+  }
+
+  Deno.test(option.prefixedTestName, async (t) => {
     for (const testcase of testcases) {
       await t.step(testcase.label, () => {
         const got = runner(testcase.inputs);
@@ -52,11 +66,22 @@ export type ThrowTestCase<T extends TestFunction> = {
 };
 
 export function tableDrivenTestThrow<T extends TestFunction>(
-  testname: string,
   testcases: ThrowTestCase<T>[],
   runner: TestRunner<T>,
+  option: TableDrivenOption = {},
 ): void {
-  Deno.test(testname, async (t) => {
+  if (option.prefixedTestName === undefined) {
+    for (const testcase of testcases) {
+      Deno.test(testcase.label, () => {
+        assertThrows(() => {
+          runner(testcase.inputs);
+        });
+      });
+    }
+    return;
+  }
+
+  Deno.test(option.prefixedTestName, async (t) => {
     for (const testcase of testcases) {
       await t.step(testcase.label, () => {
         assertThrows(() => {

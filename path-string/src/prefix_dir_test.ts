@@ -6,25 +6,39 @@ import {
   type ThrowTestCase,
 } from "./_test_util.ts";
 
+const prefixedTestName = "prefixDir()";
+
 function tableTest(
   testname: string,
   testcases: TestCase<typeof prefixDir>[],
 ) {
-  tableDrivenTest(testname, testcases, (inputs) => {
-    return prefixDir(...inputs);
-  });
+  tableDrivenTest(
+    testcases,
+    (inputs) => {
+      return prefixDir(...inputs);
+    },
+    {
+      prefixedTestName: `${prefixedTestName} - ${testname}`,
+    },
+  );
 }
 
 function tableTestThrow(
   testname: string,
   testcases: ThrowTestCase<typeof prefixDir>[],
 ) {
-  tableDrivenTestThrow(testname, testcases, (inputs) => {
-    return prefixDir(...inputs);
-  });
+  tableDrivenTestThrow(
+    testcases,
+    (inputs) => {
+      return prefixDir(...inputs);
+    },
+    {
+      prefixedTestName: `${prefixedTestName} - ${testname}`,
+    },
+  );
 }
 
-tableTest("prefixDir - argument paths", [
+tableTest("argument paths", [
   {
     label: "if it is empty",
     inputs: ["dir/", []],
@@ -52,7 +66,7 @@ tableTest("prefixDir - argument paths", [
   },
 ]);
 
-tableTest("prefixDir - argument paths", [
+tableTest("argument paths", [
   {
     label: "if it is empty",
     inputs: ["dir/", []],
@@ -80,7 +94,7 @@ tableTest("prefixDir - argument paths", [
   },
 ]);
 
-tableTest("prefixDir - arugment prefix for valid", [
+tableTest("arugment prefix for valid", [
   {
     label: "if it has suffix with slash",
     inputs: ["dir/", ["f1"]],
@@ -103,7 +117,7 @@ tableTest("prefixDir - arugment prefix for valid", [
   },
 ]);
 
-tableTestThrow("prefixDir - arugment prefix for throwing error", [
+tableTestThrow("arugment prefix for throwing error", [
   {
     label: "if it has no suffix with slash",
     inputs: ["base", ["f1"]],
@@ -114,7 +128,7 @@ tableTestThrow("prefixDir - arugment prefix for throwing error", [
   },
 ]);
 
-tableTest("prefixDir - combine continuous slash into one", [
+tableTest("combine continuous slash into one", [
   {
     label: "if dir and file have double slash",
     inputs: ["dir//", ["//f1"]],
