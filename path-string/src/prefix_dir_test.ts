@@ -1,47 +1,30 @@
-import { assertEquals, assertThrows } from "jsr:@std/assert";
 import { prefixDir } from "./prefix_dir.ts";
+import {
+  tableDrivenTest,
+  tableDrivenTestThrow,
+  type TestCase,
+  type ThrowTestCase,
+} from "./_test_util.ts";
 
-type TestCase = {
-  label: string;
-  inputs: Parameters<typeof prefixDir>;
-  expected: ReturnType<typeof prefixDir>;
-};
-
-function tableDrivenTest(
+function tableTest(
   testname: string,
-  testcases: TestCase[],
+  testcases: TestCase<typeof prefixDir>[],
 ) {
-  Deno.test(testname, async (t) => {
-    for (const testcase of testcases) {
-      await t.step(testcase.label, () => {
-        const got = prefixDir(...testcase.inputs);
-        assertEquals(got, testcase.expected);
-      });
-    }
+  tableDrivenTest(testname, testcases, (inputs) => {
+    return prefixDir(...inputs);
   });
 }
 
-type ThrowTestCase = {
-  label: string;
-  inputs: Parameters<typeof prefixDir>;
-};
-
-function tableDrivenTestThrow(
+function tableTestThrow(
   testname: string,
-  testcases: ThrowTestCase[],
+  testcases: ThrowTestCase<typeof prefixDir>[],
 ) {
-  Deno.test(testname, async (t) => {
-    for (const testcase of testcases) {
-      await t.step(testcase.label, () => {
-        assertThrows(() => {
-          prefixDir(...testcase.inputs);
-        });
-      });
-    }
+  tableDrivenTestThrow(testname, testcases, (inputs) => {
+    return prefixDir(...inputs);
   });
 }
 
-tableDrivenTest("prefixDir - argument paths", [
+tableTest("prefixDir - argument paths", [
   {
     label: "if it is empty",
     inputs: ["dir/", []],
@@ -69,7 +52,7 @@ tableDrivenTest("prefixDir - argument paths", [
   },
 ]);
 
-tableDrivenTest("prefixDir - argument paths", [
+tableTest("prefixDir - argument paths", [
   {
     label: "if it is empty",
     inputs: ["dir/", []],
@@ -97,7 +80,7 @@ tableDrivenTest("prefixDir - argument paths", [
   },
 ]);
 
-tableDrivenTest("prefixDir - arugment prefix for valid", [
+tableTest("prefixDir - arugment prefix for valid", [
   {
     label: "if it has suffix with slash",
     inputs: ["dir/", ["f1"]],
@@ -120,7 +103,7 @@ tableDrivenTest("prefixDir - arugment prefix for valid", [
   },
 ]);
 
-tableDrivenTestThrow("prefixDir - arugment prefix for throwing error", [
+tableTestThrow("prefixDir - arugment prefix for throwing error", [
   {
     label: "if it has no suffix with slash",
     inputs: ["base", ["f1"]],
@@ -131,7 +114,7 @@ tableDrivenTestThrow("prefixDir - arugment prefix for throwing error", [
   },
 ]);
 
-tableDrivenTest("prefixDir - combine continuous slash into one", [
+tableTest("prefixDir - combine continuous slash into one", [
   {
     label: "if dir and file have double slash",
     inputs: ["dir//", ["//f1"]],
